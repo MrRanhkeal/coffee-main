@@ -173,9 +173,9 @@ const MainLayout = () => {
 
     useEffect(() => {
         getConfig();
-        if(profile === null){
-            navigate("/login");
-        }
+        // if(profile === null){
+        //     navigate("/login");
+        // }
     }, 
     []);
 
