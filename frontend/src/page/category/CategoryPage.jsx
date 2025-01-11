@@ -168,7 +168,7 @@ export default function CategoryPage() {
                     {
                         key: "id",
                         title: "id",
-                        dataIndex: "Id"
+                        dataIndex: "id"
                     },
                     {
                         key: "name",

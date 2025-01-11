@@ -3,7 +3,7 @@ module.exports = {
     config:{
         app_name:"pos",
         app_version:"1.0.0",
-        image_path:"C/Users/ranh/Desktop/NodeJS/coffee_project/back-api/src/public/images/", //please change path
+        image_path:"", //please change path
         db: {
             HOST: 'localhost',
             USER: 'root',
