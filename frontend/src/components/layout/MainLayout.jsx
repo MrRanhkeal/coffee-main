@@ -1,4 +1,4 @@
-//import React, {  useEffect, useState } from "react";
+import React, {  } from "react";
 import { PieChartOutlined, SmileOutlined } from "@ant-design/icons";
 import {  Dropdown, Input, Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -37,7 +37,7 @@ const items = [
         children: [
             {
                 key: "category",
-                label: "Category",
+                label: "category",
                 icon: <PieChartOutlined />,
                 children: null,
             },

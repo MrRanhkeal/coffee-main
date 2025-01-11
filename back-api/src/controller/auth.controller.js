@@ -2,7 +2,7 @@ const {db, logErr} = require("../util/helper");
 const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
 // const config = require("../util/config");
-const {getAccessToken,validate_token} = require("../middleware/jwt_token");
+const {getAccessToken} = require("../middleware/jwt_token");
 //const { text } = require("body-parser");
 
 exports.getlist = async (req, res) => {

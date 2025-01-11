@@ -1,4 +1,6 @@
 const {db, logErr} = require("../util/helper");
+const {getAccesToken} = require("../middleware/jwt_token");
+
 exports.getlist = async (req, res) => {
     try {
         var [list] = await db.query("SELECT * FROM category");

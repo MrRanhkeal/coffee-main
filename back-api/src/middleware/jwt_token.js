@@ -54,7 +54,7 @@ exports.validate_token = () => {
 exports.getAccessToken = async(paramData) => {
     const access_token = await jwt.sign({
             data:paramData},
-            config.config.token.access_token_key,{expiresIn:"2h"
+            config.config.token.access_token_key,{expiresIn:"12h"
         });
     return access_token;
 }

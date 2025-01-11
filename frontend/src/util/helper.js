@@ -4,10 +4,10 @@ import { setServerStatus } from "../store/server.store";
 import { Config } from "./config";
 
 
-export const request = async (url = "", data = {}, method = "GET") => {
+export const request = (url = "", method = "get", data = {}) => {
 
     //verify token
-    var access_token = getAccesToken;
+    var access_token = getAccesToken();
     return axios({
         //connect to api
         url: Config.base_url + url,
@@ -15,7 +15,7 @@ export const request = async (url = "", data = {}, method = "GET") => {
         data: data,
         headers: {
             //"Content-Type": "application/json",
-            "Authorization": "Bearer " + access_token
+            Authorization: "Bearer " + access_token
         }
     }).then((res) => {
         setServerStatus(200);

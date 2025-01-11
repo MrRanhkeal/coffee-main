@@ -1,13 +1,12 @@
-//import React from 'react'
-//import MainPage from '../../components/layout/MainPage';
+import React from "react";
 import { Button, Form, Input, message, Modal, Select, Space, Table, Tag } from "antd";
 import { MdAdd, MdCancel, MdDelete, MdEdit } from "react-icons/md";
 import { request } from "../../util/helper";
 import { useEffect, useState } from "react";
-function CategoryPage() {
+export default function CategoryPage() {
     const [formRef] = Form.useForm();
     const [List, setList] = useState([]);
-    const [loading, setLoading] = useState(false); //loading mainpage when data connected
+    const [loading, setLoading] = useState(false); 
     const [status, setStatus] = useState(({
         visibleModal: false,
         name: "",
@@ -25,7 +24,7 @@ function CategoryPage() {
         const res = await request("category", "get");
         setLoading(false);
         if (res) {
-            setList(res);
+            setList(res.List);
         }
     }
     //add new
@@ -63,9 +62,11 @@ function CategoryPage() {
         try {
             Modal.confirm({
                 title: "Are you sure delete this category?",
-                okText: "Yes",
-                okType: "danger",
-                cancelText: "No",
+                description: "are you soure?",
+                onText: "Ok",
+                // okText: "Yes",
+                // okType: "danger",
+                // cancelText: "No",
                 onOk: async () => {
                     const res = await request("category", "delete", { id: data.id });
                     if (res && !res.error) {
@@ -94,9 +95,11 @@ function CategoryPage() {
         try{
             var data ={
                 id: formRef.getFieldValue("id"),
+                
                 name: items.name,
                 description: items.description,
                 status: items.status,
+                code: items.code,
                 parent_id: 1
             };
             var method = "post";
@@ -131,6 +134,9 @@ function CategoryPage() {
                     <Form.Item name={"description"} label="description">
                         <Input.TextArea placeholder="description" />
                     </Form.Item>
+                    <Form.Item name={"code"} label="code">
+                        <Input placeholder="code" />
+                    </Form.Item>
                     <Form.Item name={"status"} label={"status"}>
                         <Select placeholder="select status"
                             options={[
@@ -162,12 +168,17 @@ function CategoryPage() {
                     {
                         key: "id",
                         title: "id",
-                        dataIndex: "id"
+                        dataIndex: "Id"
                     },
                     {
                         key: "name",
                         title: "name",
                         dataIndex: "name"
+                    },
+                    {
+                        key: "code",
+                        title: "code",
+                        dataIndex: "code"
                     },
                     {
                         key: "description",
@@ -186,6 +197,11 @@ function CategoryPage() {
                             ),
                     },
                     {
+                        key: "name",
+                        title: "image",
+                        dataIndex: "image",
+                    },
+                    {
                         key: "action",
                         title: "Action",
                         align: "center",
@@ -202,4 +218,3 @@ function CategoryPage() {
     )
 }
 
-export default CategoryPage
