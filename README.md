@@ -1,4 +1,4 @@
-  React Pos System
+  React Pos System ```\n```
 Use npm package manager 
 1. ```cd /back-api npm install```
 2. ```cd /frontend npm install ```
