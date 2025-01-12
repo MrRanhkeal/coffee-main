@@ -1,5 +1,5 @@
 const mysql = require("mysql2/promise");
-const {config} = require("../util/config");
+const {config} = require("./config");
 module.exports = mysql.createPool({
     host: config.db.HOST,
     user: config.db.USER,

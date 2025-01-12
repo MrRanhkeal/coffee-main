@@ -1,11 +1,12 @@
-import React from "react";
+
 import { Button, Form, Input, message, Modal, Select, Space, Table, Tag } from "antd";
 import { MdAdd, MdCancel, MdDelete, MdEdit } from "react-icons/md";
 import { request } from "../../util/helper";
 import { useEffect, useState } from "react";
-export default function CategoryPage() {
+import MainPage from "../../components/layout/MainPage";
+function CategoryPage() {
     const [formRef] = Form.useForm();
-    const [List, setList] = useState([]);
+    const [list, setList] = useState([]);
     const [loading, setLoading] = useState(false); 
     const [status, setStatus] = useState(({
         visibleModal: false,
@@ -17,16 +18,16 @@ export default function CategoryPage() {
     //effect use handle the side effects such as fetching data and updating the DOM
     useEffect(() => {
         getList();
-    })
+    },[])
     //getlist
     const getList = async () => {
         setLoading(true);
-        const res = await request("category", "get");
+        const res = await request("category/getlist", "GET");
         setLoading(false);
         if (res) {
-            setList(res.List);
+            setList(res.list);
         }
-    }
+    };
     //add new
     const onClickAddBtn = () => {
         try {
@@ -50,28 +51,29 @@ export default function CategoryPage() {
                 id: data.id, //hide id on(save or update)
                 name: data.name,
                 description: data.description,
-                status: data.status
+                status: data.status,
+                code: data.code
             });
         }
         catch (error) {
             console.log("something when wrong", error)
         }
-    }
+    };
     //delete
-    const onClickDelete = (data) => {
+    const onClickDelete = async (data) => {
         try {
             Modal.confirm({
                 title: "Are you sure delete this category?",
-                description: "are you soure?",
-                onText: "Ok",
-                // okText: "Yes",
-                // okType: "danger",
-                // cancelText: "No",
+                // description: "are you soure?",
+                //onText: "Ok",
+                okText: "Yes",
+                okType: "danger",
+                cancelText: "No",
                 onOk: async () => {
                     const res = await request("category", "delete", { id: data.id });
                     if (res && !res.error) {
                         message.success(res.message);
-                        const newList = List.filter((item) => item.id !== data.id);
+                        const newList = list.filter((item) => item.id != data.id);
                         setList(newList);
                     }
                 }
@@ -89,13 +91,12 @@ export default function CategoryPage() {
             visibleModal: false,
             id: null
         })
-    }
+    };
     //finish
     const onFinish = async (items) => {
         try{
             var data ={
                 id: formRef.getFieldValue("id"),
-                
                 name: items.name,
                 description: items.description,
                 status: items.status,
@@ -119,24 +120,24 @@ export default function CategoryPage() {
     }
     return (
         // <div>CategoryPage</div>
-        <div loading={loading}>
+        <MainPage loading={loading}>
             <Button type="primary" className="btn-add" icon={<MdAdd />} onClick={onClickAddBtn}>New</Button>
             <Modal
                 open={status.visibleModal}
-                title={formRef.getFieldValue("id") ? "Edit category" : "Add new category"}
+                title={formRef.getFieldValue("Id") ? "Edit category" : "Add new category"}
                 footer={null}
                 onCancel={onCloseModal}
             >
                 <Form layout="vertical" onFinish={onFinish} form={formRef}>
-                    <Form.Item name={"name"} label="name">
-                        <Input placeholder="name" />
+                    <Form.Item name={"name"} label=" category name">
+                        <Input placeholder="category name" />
                     </Form.Item>
                     <Form.Item name={"description"} label="description">
                         <Input.TextArea placeholder="description" />
                     </Form.Item>
-                    <Form.Item name={"code"} label="code">
+                    {/* <Form.Item name={"code"} label="code">
                         <Input placeholder="code" />
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item name={"status"} label={"status"}>
                         <Select placeholder="select status"
                             options={[
@@ -152,13 +153,13 @@ export default function CategoryPage() {
                         />
                     </Form.Item>
                     <Space>
-                        <Button onClick={onCloseModal} icon={<MdCancel />}>Cancel</Button>
-                        <Button type="primary" htmlType="submit" >{formRef.getFieldValue("id") ? "Update" : "Save"}</Button>
+                        <Button key={"back"} onClick={onCloseModal} icon={<MdCancel />}>Cancel</Button>
+                        <Button type="primary" htmlType="submit" >{formRef.getFieldValue("Id") ? "Update" : "Save"}</Button>
                     </Space>
                 </Form>
             </Modal>
             <Table className="table"
-                dataSource={List}
+                dataSource={list}
                 columns={[
                     {
                         key: "No",
@@ -167,27 +168,32 @@ export default function CategoryPage() {
                     },
                     {
                         key: "id",
-                        title: "id",
+                        title: "Id",
                         dataIndex: "id"
                     },
                     {
                         key: "name",
-                        title: "name",
+                        title: "Name",
                         dataIndex: "name"
                     },
                     {
                         key: "code",
-                        title: "code",
+                        title: "Code",
                         dataIndex: "code"
                     },
                     {
                         key: "description",
-                        title: "description",
+                        title: "Description",
                         dataIndex: "description"
                     },
                     {
+                        key: "name",
+                        title: "Image",
+                        dataIndex: "image",
+                    },
+                    {
                         key: "status",
-                        title: "status",
+                        title: "Status",
                         dataIndex: "status",
                         render: (Status) =>
                             Status == 1 ? (
@@ -197,24 +203,20 @@ export default function CategoryPage() {
                             ),
                     },
                     {
-                        key: "name",
-                        title: "image",
-                        dataIndex: "image",
-                    },
-                    {
-                        key: "action",
+                        key: "Action",
                         title: "Action",
                         align: "center",
                         render: (item, data, index) => (
                             <Space>
-                                <Button type="primary" danger icon={<MdEdit />} onClick={() => onClickEdit(data, index)} />
+                                <Button type="primary" icon={<MdEdit />} onClick={() => onClickEdit(data, index)} />
                                 <Button type="primary" danger icon={<MdDelete />} onClick={() => onClickDelete(data, index)} />
                             </Space>
-                        )
-                    }
+                        ),
+                    },
                 ]}
             />
-        </div>
-    )
+        </MainPage>
+    );
 }
 
+export default CategoryPage;

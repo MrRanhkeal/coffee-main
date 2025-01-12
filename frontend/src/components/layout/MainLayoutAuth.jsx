@@ -6,7 +6,7 @@ function MainLayoutAuth() {
             <div style={{ backgroundColor: "pink", padding: 15 }}>
                 <div>Layout Auth</div>
             </div>
-            <div>
+            <div className='main-container'> 
                 <Outlet/>
             </div>
         </div>

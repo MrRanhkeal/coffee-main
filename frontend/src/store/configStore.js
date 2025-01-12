@@ -24,14 +24,10 @@ export const configStore = create((set) => ({
         brand: null,
         customer: null,
     },
-    setConfig: (params) =>
+    setConfig: (params) => 
         set((state) => ({
-            config:params,
-            ...state
-        })),
-    // setConfig: (params) =>
-    //     set((status) => ({
-    //         config: params,
-    //     })),
-    
+        config: params, //property in the state is to set to the new value
+        ...state // ...state this used to include all other properties of the current state
+        
+    })),
 }));

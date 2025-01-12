@@ -1,43 +1,62 @@
-import React, {  } from "react";
+//import React, {  } from "react";
 import { PieChartOutlined, SmileOutlined } from "@ant-design/icons";
 import {  Dropdown, Input, Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { IoIosNotifications } from "react-icons/io";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
-import { getProfile} from "../../store/profile.store";
+import { getProfile, setAccesToken, setProfile} from "../../store/profile.store";
 import { request } from "../../util/helper";
 const { Content, Sider } = Layout;
 import "../../App.css";
 import { useEffect, useState } from "react";
+import { configStore } from "../../store/configStore";
+import Logo from "../../assets/coffee.jpg";
+import ImgUser from "../../../../back-api/image/users/ranh_admin.jpg";
+
 
 const items = [
     {
+        key: "login",
+        label: "Login",
+        icon: <PieChartOutlined />,
+        children: null,
+    },
+    {
+        key: "home",
         label: "Home",
+        icon: <PieChartOutlined />,
+        children: null,
+    },
+    {
         key: "",
-        icon: <PieChartOutlined />,
-        children: null,
-    },
-    {
         label: "Dashboard",
-        key: "dashboard",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        label: "User",
+        
         key: "user",
+        label: "User",
+        icon: <PieChartOutlined />,
+        children: null,
+    },
+    {
+        
+        key: "cate",
+        label: "Cate",
         icon: <PieChartOutlined />,
         children: null,
     },
     // page porduct
     {
-        label: "Product",
+        
         key: "product",
+        label: "Product",
         icon: <PieChartOutlined />,
         children: [
             {
                 key: "category",
-                label: "category",
+                label: "Category",
                 icon: <PieChartOutlined />,
                 children: null,
             },
@@ -58,38 +77,44 @@ const items = [
         
     },
     {
-        label: "Employee",
+        
         key: "employee",
+        label: "Employee",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        label: "Customer",
+        
         key: "customer",
+        label: "Customer",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        label: "Order",
+        
         key: "order",
+        label: "Order",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        label: "Report",
+        
         key: "report",
+        label: "Report",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        label: "Role",
+        
         key: "role",
+        label: "Role",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        label: "Setting",
+        
         key: "setting",
+        label: "Setting",
         icon: <PieChartOutlined />,
         children: null,
     }
@@ -166,27 +191,47 @@ const MainLayout = () => {
     // }
 
     //new source
+    
+    const { setConfig } = configStore();
     const profile = getProfile();
     const [collapsed, setCollapsed] = useState(false);
     const {token:{colorBgContainer, borderRadiusLG}} = theme.useToken();
     const navigate = useNavigate();
 
+    // const permission = getPermission();
+    // const { setConfig } = configStore();
+    // const profile = getProfile();
+    // const [collapsed, setCollapsed] = useState(false);
+    // const {
+    //     token: { colorBgContainer, borderRadiusLG },
+    // } = theme.useToken();
+    // const navigate = useNavigate();
+
+    // const [items, setItems] = useState([]);
+
     useEffect(() => {
         getConfig();
-        // if(profile === null){
-        //     navigate("/login");
-        // }
-    }, 
-    []);
+        if(profile === null){
+            navigate("/login");
+        }
+    });
 
     const getConfig = async () => {
         const res = await request("config", "get");
         if (res) {
-            //setConfig(res);
+            setConfig(res);
         }
     }
     const onClickMenu = (item) => {
         navigate(item.key);
+    }
+    const onLoginout = () => {
+        setProfile("");
+        setAccesToken("");
+        navigate("/login");
+    }
+    if(!profile){
+        return null;
     }
 
     const itemsDropdown = [
@@ -219,15 +264,25 @@ const MainLayout = () => {
             
         }}
         >
-            <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-                <div className='demo-logo-vertical' />
-                <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline' items={items} onClick={onClickMenu} />
+            <Sider  
+                collapsible //show collapse button
+                collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}
+                
+            >
+                {/* <div className='demo-logo-vertical' /> */}
+                <Menu 
+                    theme='dark' //dark or light theme
+                    defaultSelectedKeys={['1']} 
+                    mode='inline' items={items} //show items
+                    onClick={onClickMenu} //click menu to access route
+
+                />
             </Sider>
             <Layout>
                 <div className='admin-header'>
                     <div className='admin-header-g1'>
                         <div>
-                            {/* <img className='admin-logo' src={Logo} alt="Logo" /> */}
+                            <img className='admin-logo' src={Logo} alt="Logo" style={{}} />
                         </div>
                         <div>
                             <div className='txt-brand-name'>POS-SYSTEM</div>
@@ -249,11 +304,11 @@ const MainLayout = () => {
                         items: itemsDropdown,
                         onClick: (event) => {
                             if (event.key == "logout") {
-                                // onLoginout();
+                                onLoginout();
                             }
                         },
                     }} >
-                        {/* <img className='img-user' src={ImgUser} alt='Logo' /> */}
+                        <img className='img-user' src={ImgUser} alt='Logo' />
                     </Dropdown>
                 </div>
                 <Content style={{ margin: "16px" }}>

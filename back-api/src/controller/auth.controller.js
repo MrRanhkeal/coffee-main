@@ -1,7 +1,7 @@
 const {db, logErr} = require("../util/helper");
 const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
-// const config = require("../util/config");
+//const jwt = require("jsonwebtoken");
+//const config = require("../util/config");
 const {getAccessToken} = require("../middleware/jwt_token");
 //const { text } = require("body-parser");
 
@@ -239,3 +239,63 @@ exports.verify_email = async (req, res) => {
         logErr("auth.verify_email",err,res); 
     }
 }
+
+
+// exports.validate_token = () => {
+//     try{
+//         return(req,res,next) =>{
+//             var authorization = req.headers.authorization; //token from client
+//             var token_from_client = null;
+//             if(authorization != null && authorization != ""){
+//                 token_from_client = authorization.split(" "); //authori : Bearer token "13fasd6f4a6dsfsadfiowero3u4r09eru0[9uf"
+//                 token_from_client = token_from_client[1]; //get only access token
+
+//             }
+//             if(token_from_client == null){
+//                 res.status(401).send({
+//                     message:"unauthorized",
+//                     error:"no token found"
+//                 })
+//             }
+//             else{
+//                 //verify jwt
+//                 jwt.verify(token_from_client,config.config.token.access_token_key,(error,result) => {
+//                     if(error){
+//                         res.status(401).send({
+//                             message:"unauthorized",
+//                             error:"invalid token",
+//                             success:false
+//                         })
+//                     }
+//                     else{
+//                         req.currrent_id = result.data.profile.id;
+//                         req.profile = result.data.profile;
+//                         req.permission = result.data.permission;
+//                         next(); //continue controller
+//                     }
+//                 })
+//             }
+//         }
+//     }
+//     catch(error){
+//         logErr("auth.validate_token",error,res);
+//         res.status(401).send({
+//             message:"unauthorized",
+//             error:"invalid token"
+//         })
+//     }
+// };
+
+// const getAccessToken = async (paramData) => {
+    
+//     const access_token = await jwt.sign({ data: paramData }, config.config.token.access_token_key, { expiresIn: "12h" });
+//     return access_token;
+// };
+//generate access token_key
+// exports.getAccessToken = async(paramData) => {
+//     const access_token = await jwt.sign({
+//             data:paramData},
+//             config.config.token.access_token_key,{expiresIn:"12h"
+//         });
+//     return access_token;
+// }

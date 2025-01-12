@@ -1,0 +1,13 @@
+create new project
+    npm create vite@latest front-pos -- --template react //create project with vite
+    npm install //install node-modules
+    npm run dev //for run project 
+
+dependencie init
+    npm i antd
+    npm i axios
+    npm i react
+    npm i react-dom
+    npm i react-icons
+    npm i react-router-dom
+    npm i zustand

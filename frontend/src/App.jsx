@@ -16,12 +16,14 @@ import ReportPage from './page/report/ReportPage';
 import RolePage from './page/role/RolePage';
 import UserPage from './page/user/UserPage';
 import SettngPage from './page/setting/SettngPage';
+import Catepage from './page/category/catepage';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout/>}>
           <Route path="/" element={<HomePage/>}/>
+          <Route path="/cate" element={<Catepage/>}/>
           <Route path="/category" element={<CategoryPage/>}/>
           <Route path="/customer" element={<CustomerPage/>}/>
           <Route path="/dashboard" element={<DashboardPage/>}/>

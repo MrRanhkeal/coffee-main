@@ -1,18 +1,16 @@
-const {db, logErr} = require("../util/helper");
-const {getAccesToken} = require("../middleware/jwt_token");
+
+const {db, logErr,isEmpty,isArray} = require("../util/helper");
+
 
 exports.getlist = async (req, res) => {
     try {
+        //please select and sort data
         var [list] = await db.query("SELECT * FROM category");
         res.json({
-            data:list,
+            
+            list:list,
             message:"success"
         })
-        // var list = "category list";
-        // res.json({
-        //     data:list,
-        //     message:"success"
-        // })
     } 
     catch (error) {
         //logErr(,error,res);
