@@ -16,7 +16,7 @@ git push -u origin main
         - stay on bash
         - git clone //clone git url https via prot
         - into project //you project name
-        - git branch // noted
+        - git init // init your project
         - git add . //add your source
         - git commit -m "status" //your status
         - git push //push your source
