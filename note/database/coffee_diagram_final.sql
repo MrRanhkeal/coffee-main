@@ -1,3 +1,5 @@
+USE testing; --your stetements
+
 CREATE TABLE `users` (
   `user_id` int PRIMARY KEY AUTO_INCREMENT,
   `role_id` int,
@@ -9,7 +11,9 @@ CREATE TABLE `users` (
   `status` tinyint(1),
   `create_by` varchar(120),
   `create_at` timestamp
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into users (role_id,name,username,password,create_by) 
+  values (1,'admin','admin@gmail.com','123456','admin');
 
 CREATE TABLE `roles` (
   `role_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -17,16 +21,20 @@ CREATE TABLE `roles` (
   `code` int,
   `discription` varchar(255),
   `create_at` timestamp
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into roles (name,code,discription) 
+  values ('admin',1,'admin');
 
 CREATE TABLE `customers` (
-  `cust_id` int int PRIMARY KEY AUTO_INCREMENT,
+  `cust_id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(120),
   `phone` varchar(18),
   `email` varchar(120),
   `address` text,
   `create_at` timestamp
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into customers (name,phone,email,address) 
+  values ('admin','0123456789','admin@gmail.com','pp');
 
 CREATE TABLE `category` (
   `category_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -34,7 +42,9 @@ CREATE TABLE `category` (
   `code` int(11),
   `description` varchar(120),
   `img` blob
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into category (name,code,description) 
+  values ('admin',1,'admin');
 
 CREATE TABLE `products` (
   `product_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -51,7 +61,9 @@ CREATE TABLE `products` (
   `image` blob,
   `create_by` varchar(120),
   `create_at` timestamp
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into products (category_id,product_type_id,name,brand,barcode,description,qty,price,discount,status,image,create_by) 
+  values (1,1,'admin','admin','admin','admin',1,1,1,1,'admin','admin');
 
 CREATE TABLE `orders` (
   `order_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -64,7 +76,9 @@ CREATE TABLE `orders` (
   `status` boolean,
   `create_by` varchar(120),
   `create_at` timestamp
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into orders (customer_id,order_no,user_id,paid_amount,payment_method,remark,status,create_by) 
+  values (1,'admin',1,1,'admin','admin',1,'admin');
 
 CREATE TABLE `order_items` (
   `orderitem_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -74,7 +88,9 @@ CREATE TABLE `order_items` (
   `price` DECIMAL(7,2),
   `discount` DECIMAL(7,2),
   `total` DECIMAL(7,2)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into order_items (order_id,product_id,qty,price,discount,total) 
+  values (1,1,1,1,1,1);
 
 CREATE TABLE `ivoices` (
   `invoice_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -89,7 +105,7 @@ CREATE TABLE `ivoices` (
   `payment_status` varchar(120),
   `create_by` varchar(120),
   `create_at` timestamp
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `product_type` (
   `pro_type_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -97,13 +113,15 @@ CREATE TABLE `product_type` (
   `image` blob,
   `create_by` varchar(120),
   `create_at` timestamp
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into product_type (product_type_name,image,create_by) 
+  values ('admin','admin','admin');
 
 CREATE TABLE `exchange_rate` (
   `user_id` int,
   `khh_currency` decimal,
   `usd_currency` decimal
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 ALTER TABLE `users` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 

@@ -1,17 +1,22 @@
 //import React, {  } from "react";
 import { PieChartOutlined, SmileOutlined } from "@ant-design/icons";
-import {  Dropdown, Input, Layout, Menu, theme } from "antd";
+import { Dropdown, Input, Layout, Menu, Space, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { IoIosNotifications } from "react-icons/io";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
-import { getProfile, setAccesToken, setProfile} from "../../store/profile.store";
+import { getProfile, setAccesToken, setProfile } from "../../store/profile.store";
 import { request } from "../../util/helper";
 const { Content, Sider } = Layout;
 import "../../App.css";
 import { useEffect, useState } from "react";
-import { configStore } from "../../store/configStore";
+import { configStore } from "../../store/config.store";
 import Logo from "../../assets/coffee.jpg";
 import ImgUser from "../../../../back-api/image/users/ranh_admin.jpg";
+
+//dardk
+// import React, { useContext } from 'react';
+// import { ThemeProvider, ThemeContext } from "../contexts/ThemeContext";
+
 
 
 const items = [
@@ -22,34 +27,34 @@ const items = [
         children: null,
     },
     {
-        key: "home",
-        label: "Home",
+        key: "register",
+        label: "Register",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
         key: "",
+        label: "Home",
+        icon: <PieChartOutlined />,
+        children: null,
+    },
+    {
+        key: "dashboard",
         label: "Dashboard",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        
+
         key: "user",
         label: "User",
         icon: <PieChartOutlined />,
         children: null,
     },
-    {
-        
-        key: "cate",
-        label: "Cate",
-        icon: <PieChartOutlined />,
-        children: null,
-    },
+
     // page porduct
     {
-        
+
         key: "product",
         label: "Product",
         icon: <PieChartOutlined />,
@@ -72,47 +77,47 @@ const items = [
                 icon: <PieChartOutlined />,
                 children: null,
             },
-            
+
         ],
-        
+
     },
     {
-        
+
         key: "employee",
         label: "Employee",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        
+
         key: "customer",
         label: "Customer",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        
+
         key: "order",
         label: "Order",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        
+
         key: "report",
         label: "Report",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        
+
         key: "role",
         label: "Role",
         icon: <PieChartOutlined />,
         children: null,
     },
     {
-        
+
         key: "setting",
         label: "Setting",
         icon: <PieChartOutlined />,
@@ -191,12 +196,14 @@ const MainLayout = () => {
     // }
 
     //new source
-    
+
     const { setConfig } = configStore();
     const profile = getProfile();
     const [collapsed, setCollapsed] = useState(false);
-    const {token:{colorBgContainer, borderRadiusLG}} = theme.useToken();
+    const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
     const navigate = useNavigate();
+
+
 
     // const permission = getPermission();
     // const { setConfig } = configStore();
@@ -211,7 +218,7 @@ const MainLayout = () => {
 
     useEffect(() => {
         getConfig();
-        if(profile === null){
+        if (profile === null) {
             navigate("/login");
         }
     });
@@ -230,10 +237,20 @@ const MainLayout = () => {
         setAccesToken("");
         navigate("/login");
     }
-    if(!profile){
+    if (!profile) {
         return null;
     }
 
+    //theme
+    // const ThemeToggleButton = () => {
+    //     const { theme, toggleTheme } = useContext(ThemeContext);
+
+    //     return (
+    //         <button className={theme} onClick={toggleTheme}>
+    //             🔆 {theme === "light" ? "Dark" : "Light"} 🌛
+    //         </button>
+    //     );
+    // };
     const itemsDropdown = [
         {
             key: "1",
@@ -259,26 +276,28 @@ const MainLayout = () => {
     ];
 
     return (
+        
         <Layout style={{
             minHeight: "100vh",
-            
+            minWidth: "100vw"
         }}
-        >
-            <Sider  
+        >   
+            <Sider
                 collapsible //show collapse button
                 collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}
-                
+
             >
                 {/* <div className='demo-logo-vertical' /> */}
-                <Menu 
+                <Menu
                     theme='dark' //dark or light theme
-                    defaultSelectedKeys={['1']} 
+                    defaultSelectedKeys={['1']}
                     mode='inline' items={items} //show items
                     onClick={onClickMenu} //click menu to access route
 
                 />
             </Sider>
-            <Layout>
+            <Layout >
+
                 <div className='admin-header'>
                     <div className='admin-header-g1'>
                         <div>
@@ -291,6 +310,7 @@ const MainLayout = () => {
                         <div>
                             <Input.Search style={{ width: 180, marginLeft: 15, marginTop: 10 }} size='large' placeholder='Search' />
                         </div>
+
                     </div>
                     <div className='admin-header-g2'>
                         <IoIosNotifications className='icon-notify' />
@@ -310,14 +330,23 @@ const MainLayout = () => {
                     }} >
                         <img className='img-user' src={ImgUser} alt='Logo' />
                     </Dropdown>
+                    {/* theme */}
+                    {/* <ThemeProvider>
+                        <ThemeToggleButton />
+                    </ThemeProvider> */}
                 </div>
+
                 <Content style={{ margin: "16px" }}>
                     <div className='admin-body' style={{ backgroundColor: colorBgContainer, borderRadius: borderRadiusLG }}>
                         <Outlet />
                     </div>
                 </Content>
+
             </Layout>
         </Layout>
+
     );
+
+    
 };
 export default MainLayout;

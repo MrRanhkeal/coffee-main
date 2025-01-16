@@ -33,7 +33,7 @@ export default function MainPage({children,loading}) {
             status={server_status + ""}
             title={info[server_status].message}
             subTitle={info[server_status].sub}
-            extra={<Button type="primary">Back Home</Button>}
+            extra={<Button type="primary" href="/">Back Home</Button>}
         />
         );
     }

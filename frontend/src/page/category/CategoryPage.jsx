@@ -1,28 +1,40 @@
 
-import { Button, Form, Input, message, Modal, Select, Space, Table, Tag } from "antd";
+import { Button, Form, Input, message, Modal, Select, Space, Table, Tag, Upload } from "antd";
 import { MdAdd, MdCancel, MdDelete, MdEdit } from "react-icons/md";
 import { request } from "../../util/helper";
 import { useEffect, useState } from "react";
 import MainPage from "../../components/layout/MainPage";
+
+//image base64
+const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
 function CategoryPage() {
     const [formRef] = Form.useForm();
     const [list, setList] = useState([]);
-    const [loading, setLoading] = useState(false); 
-    const [status, setStatus] = useState(({
+    const [loading, setLoading] = useState(false);
+    const [state, setState] = useState({
         visibleModal: false,
         name: "",
         description: "",
         status: "",
+        code: "",
         parent_id: null
-    }));
+    });
+    //image check pls
+    //const [imageOptional, setImageOptional] = useState([]);
     //effect use handle the side effects such as fetching data and updating the DOM
     useEffect(() => {
         getList();
-    },[])
+    }, []);
     //getlist
     const getList = async () => {
         setLoading(true);
-        const res = await request("category/getlist", "GET");
+        const res = await request("category", "get");
         setLoading(false);
         if (res) {
             setList(res.list);
@@ -31,23 +43,23 @@ function CategoryPage() {
     //add new
     const onClickAddBtn = () => {
         try {
-            setStatus({
-                ...status,
+            setState({
+                ...state,
                 visibleModal: true
             })
         }
         catch (error) {
             console.log("something when wrong", error)
         }
-    }
+    };
     //edit
     const onClickEdit = (data) => {
         try {
-            setStatus({
-                ...status,
+            setState({
+                ...state,
                 visibleModal: true,
             });
-            formRef.setFieldValue({
+            formRef.setFieldsValue({
                 id: data.id, //hide id on(save or update)
                 name: data.name,
                 description: data.description,
@@ -82,49 +94,61 @@ function CategoryPage() {
         catch (error) {
             console.log("something when wrong", error)
         }
-    }
+    };
     //close
     const onCloseModal = () => {
         formRef.resetFields();
-        setStatus({
-            ...status,
+        setState({
+            ...state,
             visibleModal: false,
             id: null
         })
+        //image
+        //setImageOptional([]);
     };
     //finish
     const onFinish = async (items) => {
-        try{
-            var data ={
+        try {
+            var data = {
                 id: formRef.getFieldValue("id"),
                 name: items.name,
                 description: items.description,
                 status: items.status,
                 code: items.code,
-                parent_id: 1
+                parent_id: 0
             };
             var method = "post";
-            if(formRef.getFieldValue("id")){
+            if (formRef.getFieldValue("id")) {
                 method = "put";
             }
             const res = await request("category", method, data);
-            if(res && !res.error){
+            if (res && !res.error) {
                 message.success(res.message);
                 getList();
                 onCloseModal();
             }
         }
-        catch(err){
+        catch (err) {
             console.log("something when wrong", err)
         }
-    }
+    };
+    //handle preview images
+    const handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+        //viewOpen(true);
+    };
+    //handle default image
+    // const handleChangeImageDefault = ({ fileList: newFileList }) =>
+    //     setImagedefault(newFileList);
     return (
         // <div>CategoryPage</div>
         <MainPage loading={loading}>
             <Button type="primary" className="btn-add" icon={<MdAdd />} onClick={onClickAddBtn}>New</Button>
             <Modal
-                open={status.visibleModal}
-                title={formRef.getFieldValue("Id") ? "Edit category" : "Add new category"}
+                open={state.visibleModal}
+                title={formRef.getFieldValue("id") ? "Edit category" : "Add new category"}
                 footer={null}
                 onCancel={onCloseModal}
             >
@@ -135,26 +159,39 @@ function CategoryPage() {
                     <Form.Item name={"description"} label="description">
                         <Input.TextArea placeholder="description" />
                     </Form.Item>
-                    {/* <Form.Item name={"code"} label="code">
+                    <Form.Item name={"code"} label="code">
                         <Input placeholder="code" />
-                    </Form.Item> */}
+                    </Form.Item>
+                    <Form.Item name={"image"} label="Image" >
+                        <Upload
+                            customRequest={(options) => {
+                                options.onSuccess();
+                            }}
+                            maxCount={1}
+                            listType="picture"
+                            onPreview={handlePreview}
+                            //onChange={handleChangeImageDefault}
+                        >
+                            <div>+UPload</div>
+                        </Upload>
+                    </Form.Item>
                     <Form.Item name={"status"} label={"status"}>
                         <Select placeholder="select status"
                             options={[
                                 {
                                     label: "Active",
-                                    value: "1"
+                                    value: 1
                                 },
                                 {
                                     label: "InActive",
-                                    value: "0"
+                                    value: 0
                                 }
                             ]}
                         />
                     </Form.Item>
                     <Space>
                         <Button key={"back"} onClick={onCloseModal} icon={<MdCancel />}>Cancel</Button>
-                        <Button type="primary" htmlType="submit" >{formRef.getFieldValue("Id") ? "Update" : "Save"}</Button>
+                        <Button type="primary" htmlType="submit" >{formRef.getFieldValue("id") ? "Update" : "Save"}</Button>
                     </Space>
                 </Form>
             </Modal>
@@ -195,8 +232,8 @@ function CategoryPage() {
                         key: "status",
                         title: "Status",
                         dataIndex: "status",
-                        render: (Status) =>
-                            Status == 1 ? (
+                        render: (status) =>
+                            status == 1 ? (
                                 <Tag color="green">Active</Tag>
                             ) : (
                                 <Tag color="red">InActive</Tag>
@@ -209,7 +246,9 @@ function CategoryPage() {
                         render: (item, data, index) => (
                             <Space>
                                 <Button type="primary" icon={<MdEdit />} onClick={() => onClickEdit(data, index)} />
-                                <Button type="primary" danger icon={<MdDelete />} onClick={() => onClickDelete(data, index)} />
+                                <Button type="primary"
+                                    danger
+                                    icon={<MdDelete />} onClick={() => onClickDelete(data, index)} />
                             </Space>
                         ),
                     },

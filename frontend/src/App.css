@@ -83,11 +83,12 @@ table.pos_tbl_invoice td {
   align-items: center;
 }
 
-.admin-body {
+/* .admin-body {
+  
   padding: 16px;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 100px);
   overflow-y: scroll;
-}
+} */
 
 .admin-header-g1 {
   display: flex;
@@ -204,20 +205,21 @@ table.pos_tbl_invoice td {
   align-items: center;
 }
 .admin-body{
-  padding: 10px;
+  /* padding: 10px;
   min-width: 100vw;
-  /* height: calc(100vw - 110px); */
-  min-height: 100vh;
+  height: calc(100vw - 110px);
+  min-height: 100vh; */
   
-  /* overflow-y: scroll;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  min-width: 100vh;
-  min-height: 100vw;
+  overflow-y: scroll;
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* justify-content: center; */
+  min-width: 86vw;
+  min-height: 100vh;
+  display:inline-block;
   overflow: hidden;
   margin: 0;
-  padding: 0; */
+  padding: 0;
 }
 .admin-header-g1{
   display: flex;
@@ -254,4 +256,32 @@ table.pos_tbl_invoice td {
 .icon-email{
   font-size: 34px;
   margin-right: 15px;
+}
+/* for thems */
+body.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+button.light {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+button.dark {
+  background-color: #ffffff;
+  color: #000000;
 }

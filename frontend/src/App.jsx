@@ -16,35 +16,39 @@ import ReportPage from './page/report/ReportPage';
 import RolePage from './page/role/RolePage';
 import UserPage from './page/user/UserPage';
 import SettngPage from './page/setting/SettngPage';
-import Catepage from './page/category/catepage';
+
+
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout/>}>
-          <Route path="/" element={<HomePage/>}/>
-          <Route path="/cate" element={<Catepage/>}/>
-          <Route path="/category" element={<CategoryPage/>}/>
-          <Route path="/customer" element={<CustomerPage/>}/>
-          <Route path="/dashboard" element={<DashboardPage/>}/>
-          <Route path="/employee" element={<EmployeePage/>}/>
-          <Route path="/exchange" element={<ExchangPage/>}/>
-          <Route path="/order" element={<OrderPage/>}/>
-          <Route path="/product" element={<ProductPage/>}/>
-          <Route path="/report" element={<ReportPage/>}/>
-          <Route path="/user" element={<UserPage/>}/>
-          <Route path="/role" element={<RolePage/>}/>
-          <Route path="/setting" element={<SettngPage/>}/>
 
-          <Route path="*" element={<h1>404-Page not found...!</h1>}/>
+    <BrowserRouter>
+      
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/category" element={<CategoryPage />} />
+          <Route path="/customer" element={<CustomerPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/employee" element={<EmployeePage />} />
+          <Route path="/exchange" element={<ExchangPage />} />
+          <Route path="/order" element={<OrderPage />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/report" element={<ReportPage />} />
+          <Route path="/user" element={<UserPage />} />
+          <Route path="/role" element={<RolePage />} />
+          <Route path="/setting" element={<SettngPage />} />
+
+          <Route path="*" element={<h1>404-Page not found...!</h1>} />
         </Route>
-        <Route element={<MainLayoutAuth/>}>
-          <Route path="/" element={<HomePage/>}/>
-          <Route path="/login" element={<LoginPage/>}/>
-          <Route path="/register" element={<RegisterPage/>}/>
+        <Route element={<MainLayoutAuth />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Route>
       </Routes>
+      
     </BrowserRouter>
+
   )
 }
 

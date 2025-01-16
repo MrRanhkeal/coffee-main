@@ -3,7 +3,7 @@ const { logErr } = require("../util/logErr");
 const {validate_token} = require("../middleware/jwt_token");
 try{
     module.exports = (app) => {
-        app.get("/auth/getlist",validate_token(),getlist);
+        app.get("/auth",validate_token(),getlist);
         app.post("/auth/register",register);
         app.post("/auth/login",login);
         app.get("/auth/logout",validate_token(),logout);

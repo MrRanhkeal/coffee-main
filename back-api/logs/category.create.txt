@@ -1,0 +1,15 @@
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Column 'code' cannot be null
+Error: Incorrect integer value: 'Kh-103' for column 'code' at row 1

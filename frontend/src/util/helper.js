@@ -2,9 +2,10 @@ import axios from "axios";
 import { setServerStatus } from "../store/server.store";
 import { Config } from "./config";
 import { getAccessToken } from "../store/profile.store";
+//import { message } from "antd";
 
 
-export const request = (url = "", method = "GET", data = {}) => {
+export const request = (url = "", method = "get", data = {}) => {
 
     //verify token
     var access_token = getAccessToken();
@@ -34,7 +35,9 @@ export const request = (url = "", method = "GET", data = {}) => {
             } else if (err.code == "ERR_NETWORK") {
                 setServerStatus("error");
             }
-            console.log(">>>", err);
+            console.log(err.message({
+                message:"something when wrong!"
+            }));
             return false;
         });
 

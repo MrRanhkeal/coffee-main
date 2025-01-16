@@ -5,10 +5,10 @@ const {validate_token} = require("../middleware/jwt_token");
 
 try{
     module.exports = (app) => {
-        app.get("/category/getlist",validate_token(),getlist);
-        app.post("/category/create",create); //test admin
-        app.put("/category/update",update);
-        app.delete("/category/delete",remove);
+        app.get("/category",validate_token(),getlist);
+        app.post("/category",create); //test admin
+        app.put("/category",update);
+        app.delete("/category",remove);
     }
 }
 catch(err){

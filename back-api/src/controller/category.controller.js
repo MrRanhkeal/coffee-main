@@ -32,7 +32,7 @@ exports.create = async (req, res) => {
 };
 exports.update = async (req, res) => {
     try {
-        var sql = "update category set name=:name,code=:code,description=:description,description=:description,image=:image where id=:id";
+        var sql = "update category set name=:name,code=:code,description=:description,description=:description,status=:status,image=:image where id=:id";
         var [list] = await db.query(sql,req.body);
         res.json({
             data:list,

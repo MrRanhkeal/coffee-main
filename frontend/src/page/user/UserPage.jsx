@@ -23,7 +23,7 @@ function UserPage() {
     //get list user
     const getList = async () => {
         setLoading(true);
-        const res = await request("user", "get");
+        const res = await request("auth", "get");
         setLoading(false);
         if (res) {
             setList(res);
