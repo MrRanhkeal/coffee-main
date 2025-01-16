@@ -40,8 +40,7 @@ CREATE TABLE `category` (
   `category_id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255),
   `code` int(11),
-  `description` varchar(120),
-  `img` blob
+  `description` varchar(120)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 insert into category (name,code,description) 
   values ('admin',1,'admin');
