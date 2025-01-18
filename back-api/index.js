@@ -28,13 +28,14 @@ app.get("/", (req, res) => {
 try{
     require("./src/route/auth.route")(app);
     require("./src/route/category.route")(app);
-    // require("./src/route/config.route")(app);
+    require("./src/route/config.route")(app);
     require("./src/route/customer.route")(app);
     require("./src/route/invoice.route")(app);
     require("./src/route/order_items.route")(app);
     require("./src/route/order.rotue")(app);
     require("./src/route/product.route")(app);
     require("./src/route/role.route")(app);
+    require("./src/route/supplier.route")(app);
 }
 catch(err){
     //console.log(err);

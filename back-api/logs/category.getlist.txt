@@ -1,2 +1,0 @@
-TypeError: getAccessToken is not a function
-

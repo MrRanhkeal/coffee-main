@@ -316,7 +316,7 @@ const MainLayout = () => {
                         <IoIosNotifications className='icon-notify' />
                         <MdOutlineMarkEmailUnread className='icon-email' />
                         <div>
-                            <div className='txt-username'>{profile?.name}</div>
+                            {/* <div className='txt-username'>{profile?.name}</div> */}
                             <div>{profile?.role_name}</div>
                         </div>
                     </div>

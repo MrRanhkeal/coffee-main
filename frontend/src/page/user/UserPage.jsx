@@ -1,145 +1,124 @@
 //import React from 'react'
 //import MainPage from '../../components/layout/MainPage'
 import { Modal, Form, Table, Tag, Button, Input, Select, Space, message } from 'antd';
-import { MdAdd, MdCancel, MdDelete, MdEdit } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import { request } from "../../util/helper";
 import { useEffect, useState } from "react";
 function UserPage() {
     const [formRef] = Form.useForm();
-    const [List, setList] = useState([]);
-    const [loading, setLoading] = useState(false); //loading mainpage when data connected stay on MianPage
-    const [status, setStatus] = useState({
-        visibleModal: false,
-        name: "",
-        username: "",
-        phone: "",
-        sex: "",
-        status: "",
+    //const [List, setList] = useState([]);
+    //const [loading, setLoading] = useState(false); //loading mainpage when data connected stay on MianPage
+    const [state, setState] = useState({
+        role: [],
+        list: [],
+        loading: false,
+        visible: false,
+        // name: "",
+        // username: "",
+        // phone: "",
+        // sex: "",
+        // status: "",
     })
     //effect use handle the side effects such as fetching data and updating the DOM
     useEffect(() => {
         getList();
-    })
+    }, []);
     //get list user
     const getList = async () => {
-        setLoading(true);
         const res = await request("auth", "get");
-        setLoading(false);
-        if (res) {
-            setList(res);
+
+        if (res && !res.error) {
+            setState((pre) => ({
+                ...pre,
+                list: res.list,
+                role: res.role
+            }));
+            //setList(res.list);
         }
-    }
-    //add new
-    const onClickAddBtn = () => {
-        try {
-            setStatus({
-                ...status,
-                visibleModal: true
-            })
-        }
-        catch (error) {
-            console.log("something when wrong", error)
-        }
-    }
-    //edit
-    const onClickEdit = (data) => {
-        try {
-            setStatus({
-                ...status,
-                visibleModal: true,
-            });
-            formRef.setFieldValue({
-                id: data.id, //hide id on(save or update)
-                name: data.name,
-                username: data.username,
-                phone: data.phone,
-                sex: data.sex,
-                status: data.status
-            });
-        }
-        catch (error) {
-            console.log("something when wrong", error)
-        }
-    }
-    //delete
-    const onClickDelete = (data) => {
-        try {
-            Modal.confirm({
-                title: "Are you sure delete this category?",
-                okText: "Yes",
-                okType: "danger",
-                cancelText: "No",
-                onOk: async () => {
-                    const res = await request("user", "delete", { id: data.id });
-                    if (res && !res.error) {
-                        message.success(res.message);
-                        const newList = List.filter((item) => item.id !== data.id);
-                        setList(newList);
-                    }
-                }
-            });
-        }
-        catch (error) {
-            console.log("something when wrong", error)
-        }
-    }
-    //close modal
+    };
+    const onClickDelete = () => [];
+    const onClickEdit = () => [];
+
     const onCloseModal = () => {
-        setStatus({
-            ...status,
-            visibleModal: false,
-            id: null
-        })
+        setState((pre) => ({
+            ...pre,
+            visible: false
+        }));
+        formRef.resetFields();
+    }
+
+    const onOpenModal = () => {
+        setState((pre) => ({
+            ...pre,
+            visible: true,
+        }));
     }
     //finish
     const onFinish = async (items) => {
         try {
-            var data = {
-                id: formRef.getFieldValue("id"),
-                name: items.name,
-                username: items.username,
-                phone: items.phone,
-                sex: items.sex,
-                status: items.status
-            };
-            var method = "post";
-            if (formRef.getFieldValue("id")) {
-                method = "put";
+            if(items.password !== items.confirm_password){
+                message.warning("Password not match");
+                return;
             }
-            const res = await request("user", method, data);
+            var data = {
+                ...items,
+            }
+            const res = await request("auth", "post", data);
             if (res && !res.error) {
                 message.success(res.message);
                 getList();
                 onCloseModal();
             }
+            else{
+                message.warning(res.message);
+            }
         }
         catch (error) {
             console.log("something when wrong", error)
         }
-
-    }
+    };
     return (
         // <div>UserPage</div>
-        <div loading={loading}>
-            <Button type="primary" className="btn-add" icon={<MdAdd />} onClick={onClickAddBtn}>New</Button>
+        <div >
+            <Button type="primary" className="btn-add" icon={<MdAdd />} onClick={onOpenModal}>New</Button>
             <Modal
-                open={status.visibleModal}
-                title={formRef.getFieldValue("id") ? "Edit User" : "New User"}
+                open={state.visible}
+                //title={formRef.getFieldValue("id") ? "Edit User" : "New User"}
                 footer={null}
                 onCancel={onCloseModal}
             >
                 <Form layout="vertical" onFinish={onFinish} form={formRef}>
-                    <Form.Item name={"name"} label="name">
+                    <Form.Item name={"name"} label="Name">
                         <Input placeholder="name" />
                     </Form.Item>
-                    <Form.Item name={"username"} label="username">
-                        <Input type='email' placeholder="username" />
+                    <Form.Item name={"username"} label="Username">
+                    <Input type='email' placeholder="@gmail.com" />
                     </Form.Item>
-                    <Form.Item name={"phone"} label="phone">
+                    <Form.Item name={"password"} label="Password" >
+                        <Input type='password' hidden placeholder="Password" />
+                    </Form.Item>
+                    <Form.Item name={"confirm_password"} label="Confirm Password" >
+                        <Input type='password' hidden placeholder="Confirm Password" />
+                    </Form.Item>
+                    <Form.Item name={"sex"} label="Sex" >
+                        <Select placeholder="select sex"
+                            options={[
+                                {
+                                    label: "Male",
+                                    value: "male"
+                                },
+                                {
+                                    label: "Female",
+                                    value: "female"
+                                }
+                            ]}
+                        />
+                    </Form.Item>
+                    <Form.Item name={"phone"} label="phone" >
                         <Input placeholder="phone" />
                     </Form.Item>
-                    <Form.Item name={"sex"} label="sex">
-                        <Input placeholder="sex" />
+                    <Form.Item name={"role_id"} label="Role" >
+                        <Select placeholder="select role" options={state.role} />
                     </Form.Item>
                     <Form.Item name={"status"} label="status">
                         <Select placeholder="select status"
@@ -155,13 +134,19 @@ function UserPage() {
                             ]}
                         />
                     </Form.Item>
-                    <Space>
-                        <Button type="primary" onClick={onCloseModal} icon={<MdCancel />}>Cancel</Button>
-                        <Button type="primary" htmlType="submit" >{formRef.getFieldValue("id") ? "Update" : "Save"}</Button>
-                    </Space>
+                    <Form.Item style={{ textAlign: "right" }}>
+                        <Space>
+                            <Button onClick={onCloseModal}>Cancel</Button>
+                            <Button type="primary" htmlType="submit">
+                                Save
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                    
                 </Form>
             </Modal>
             <Table className="table"
+                dataSource={state.list}
                 columns={[
                     {
                         key: "No",
@@ -194,6 +179,11 @@ function UserPage() {
                         dataIndex: "sex"
                     },
                     {
+                        key: "role",
+                        title: "Role",
+                        dataIndex: "role"
+                    },
+                    {
                         key: "status",
                         title: "Status",
                         dataIndex: "status",
@@ -211,8 +201,12 @@ function UserPage() {
                         align: "center",
                         render: (item, data, index) => (
                             <Space>
-                                <Button type="primary" danger icon={<MdEdit />} onClick={() => onClickEdit(data, index)} />
-                                <Button type="primary" danger icon={<MdDelete />} onClick={() => onClickDelete(data, index)} />
+                                <Button onClick={() => onClickEdit(data,index)} type='primary'>
+                                    Edit
+                                </Button>
+                                <Button onClick={() => onClickDelete(data)} type='primary' danger>
+                                    Delete
+                                </Button>
                             </Space>
                         )
                     }

@@ -122,6 +122,48 @@ CREATE TABLE `exchange_rate` (
   `usd_currency` decimal
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+CREATE TABLE `purchase` (
+  `purchase_id` int PRIMARY KEY AUTO_INCREMENT,
+  `supplier_id` int(11),
+  `shipp_company` varchar(120),
+  `ship_cost` decimal(7,2),
+  `paid_amount` decimal(7,2),
+  `paid_date` datetime,
+  `status` boolean,
+  `create_at` timestamp
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+insert into purchase (supplier_id,shipp_company,ship_cost,paid_amount,paid_date,status) 
+  values (1,'admin',1,1,'2025-01-01',1);
+
+CREATE TABLE `purchase_products` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `purchase_id` int(11),
+  `product_id` int(11),
+  `qty` int,
+  `cost` decimal(7,2),
+  `discount` decimal(7,2),
+  `amount` decimal(7,2),
+  `retail_price` decimal(7,2),
+  `remark` text,
+  `status` boolean,
+  `create_at` timestamp
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into purchase_products (purchase_id,qty,cost,discount,amount,retail_price,remark,status)  
+  values (1,1,1,1,1,1,'admin',1);
+
+CREATE TABLE `suppliers` (
+  `supplier_id` int PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(120),
+  `phone` varchar(18),
+  `email` varchar(120),
+  `address` text,
+  `description` varchar(120),
+  `create_at` timestamp
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+insert into suppliers (name,phone,email,address,description) 
+  values ('admin','012-13-14-15','admin@gmail.com','pp','supplier');
+
 ALTER TABLE `users` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 
 ALTER TABLE `products` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
@@ -139,3 +181,11 @@ ALTER TABLE `order_items` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (
 ALTER TABLE `ivoices` ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
 
 ALTER TABLE `exchange_rate` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+ALTER TABLE `purchase` ADD FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`);
+
+ALTER TABLE `purchase_products` ADD FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`purchase_id`);
+
+ALTER TABLE `purchase_products` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+
