@@ -1,4 +1,5 @@
---use statement
+
+-- use test;
 
 CREATE TABLE `users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -136,12 +137,12 @@ CREATE TABLE `suppliers` (
 );
 
 CREATE TABLE `permissions` (
-  `id` int,
+  `id` int primary key,
   `name` varchar(120)
 );
 
 CREATE TABLE `role_permissions` (
-  `id` int,
+  `role_id` int,
   `permission_id` int
 );
 
@@ -172,3 +173,4 @@ ALTER TABLE `purchase_products` ADD FOREIGN KEY (`product_id`) REFERENCES `produ
 ALTER TABLE `role_permissions` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 
 ALTER TABLE `role_permissions` ADD FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`);
+
