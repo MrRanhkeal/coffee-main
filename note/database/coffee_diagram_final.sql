@@ -169,6 +169,6 @@ ALTER TABLE `purchase_products` ADD FOREIGN KEY (`purchase_id`) REFERENCES `purc
 
 ALTER TABLE `purchase_products` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
-ALTER TABLE `role_permissions` ADD FOREIGN KEY (`id`) REFERENCES `roles` (`id`);
+ALTER TABLE `role_permissions` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 
 ALTER TABLE `role_permissions` ADD FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`);
