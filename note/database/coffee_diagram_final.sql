@@ -1,3 +1,5 @@
+--use statement
+
 CREATE TABLE `users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `role_id` int,
