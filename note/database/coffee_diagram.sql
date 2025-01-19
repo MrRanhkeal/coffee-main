@@ -1,6 +1,3 @@
-
--- use test;
-
 CREATE TABLE `users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `role_id` int,
@@ -11,13 +8,15 @@ CREATE TABLE `users` (
   `create_by` varchar(120),
   `create_at` timestamp
 );
-insert into users(role_id,name,username,password,is_active,create_by,create_at) 
-  values(1,'admin','admin','123456789',1,'admin',now());  
+insert into users (role_id, name, username, password, create_by) 
+  values (1, 'dara', 'dara@gmail.com', '123', 'admin');
+
 CREATE TABLE `roles` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(120),
   `code` int
 );
+insert into roles (name, code) values ('admin', 1);
 
 CREATE TABLE `customers` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -29,6 +28,8 @@ CREATE TABLE `customers` (
   `create_by` varchar(120),
   `create_at` timestamp
 );
+insert into customers (name, phone, email, address, description, create_by) 
+  values ('dara', '012-12-13-14', 'dara@gmail.com', 'pp', 'cust', 'admin');
 
 CREATE TABLE `category` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -37,6 +38,7 @@ CREATE TABLE `category` (
   `description` varchar(120),
   `status` boolean
 );
+insert into category (name, code, description, status) values ('coffee', 1, 'coffee', true);
 
 CREATE TABLE `products` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -54,6 +56,8 @@ CREATE TABLE `products` (
   `create_by` varchar(120),
   `create_at` timestamp
 );
+insert into products (category_id, productype_id, name, barcode, brand, description, qty, price, discount, status, image, create_by) 
+  values (1, 1, 'coffee', '123', 'coffee', 'coffee', 10, 100, 0, 1, null, 'admin');
 
 CREATE TABLE `orders` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -66,6 +70,8 @@ CREATE TABLE `orders` (
   `create_by` varchar(120),
   `create_at` timestamp
 );
+insert into orders (customer_id, order_no, user_id, paid_amount, payment_method, remark, create_by) 
+  values (1, '123', 1, 100, 'cash', 'remark', 'admin');
 
 CREATE TABLE `order_items` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -77,6 +83,8 @@ CREATE TABLE `order_items` (
   `total` DECIMAL(7,2),
   `create_at` timestamp
 );
+insert into order_items (order_id, product_id, qty, price, discount, total) 
+  values (1, 1, 10, 100, 0, 1000);
 
 CREATE TABLE `invoices` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -101,6 +109,7 @@ CREATE TABLE `product_type` (
   `image` blob,
   `create_at` timestamp
 );
+insert into product_type (product_type_name, image) values ('coffee', null);
 
 CREATE TABLE `purchase` (
   `purchase_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -112,6 +121,8 @@ CREATE TABLE `purchase` (
   `status` boolean,
   `create_at` timestamp
 );
+insert into purchase (supplier_id, shipp_company, ship_cost, paid_amount, paid_date, status) 
+  values (1, 'dara', 100, 100, now(), true);
 
 CREATE TABLE `purchase_products` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -126,6 +137,8 @@ CREATE TABLE `purchase_products` (
   `status` boolean,
   `create_at` timestamp
 );
+insert into purchase_products (purchase_id, product_id, qty, cost, discount, amount, retail_price, remark)  
+  values (1, 1, 10, 100, 0, 1000, 100, 'remark');
 
 CREATE TABLE `suppliers` (
   `supplier_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -136,16 +149,21 @@ CREATE TABLE `suppliers` (
   `description` varchar(120),
   `create_at` timestamp
 );
+insert into suppliers (name, phone, email, address, description) 
+  values ('dara', '123', '123', '123', '123');
 
 CREATE TABLE `permissions` (
-  `id` int primary key,
+  `id` int,
   `name` varchar(120)
 );
+insert into permissions (id, name) values (1, 'admin'); 
 
 CREATE TABLE `role_permissions` (
   `role_id` int,
   `permission_id` int
 );
+insert into role_permissions (role_id, permission_id) values (1, 1);  
+
 
 ALTER TABLE `users` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 
@@ -171,7 +189,6 @@ ALTER TABLE `purchase_products` ADD FOREIGN KEY (`purchase_id`) REFERENCES `purc
 
 ALTER TABLE `purchase_products` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
-ALTER TABLE `role_permissions` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
+ALTER TABLE `role_permissions` ADD FOREIGN KEY (`id`) REFERENCES `roles` (`id`);
 
 ALTER TABLE `role_permissions` ADD FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`);
-
