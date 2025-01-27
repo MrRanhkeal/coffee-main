@@ -1,4 +1,4 @@
-  React Pos System ```use ```
+#  React Pos System ```use ```
 npm package manager 
 1. ```cd /back-api npm install```
 2. ```cd /frontend npm install ```
